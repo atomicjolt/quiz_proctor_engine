@@ -1,0 +1,50 @@
+<style>
+  body {
+    width: 100%;
+    height: 100%;
+    background-color: darkblue;
+  }
+
+  .jd-proctor-code-container {
+    width: 25%;
+    margin: 20% auto;
+  }
+
+  .jd-title {
+    font-weight: bold;
+    color: white;
+  }
+
+  .jd-flex {
+    display: flex;
+  }
+
+  .jd-proctor-code-text {
+    width: 100%;
+    flex: 1;
+  }
+
+  .jd-start-exam-button {
+    margin-top: 10px;
+    background-color: #c1a17a;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    padding: 5px 10px;
+    float: right;
+  }
+</style>
+<%= render partial: 'shared/flash_notices' %>
+<div class="jd-main-content">
+  <div class="jd-proctor-code-container">
+    <div class="jd-title">Proctor Code</div>
+    <div>
+      <%= form_tag(proctored_exams_path, method: "post") do %>
+        <div class="jd-flex">
+          <input class="jd-proctor-code-text" type="password" name="proctor_code"></input>
+        </div>
+        <div><button class="jd-start-exam-button" type="submit">START EXAM</button></div>
+      <% end %>
+    </div>
+  </div>
+</div>

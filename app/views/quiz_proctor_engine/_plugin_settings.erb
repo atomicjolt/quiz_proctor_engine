@@ -1,0 +1,12 @@
+<%= fields_for :settings, OpenObject.new(settings) do |f| %>
+  <table style="width: 500px;" class="formtable">
+    <tr>
+      <td><%= f.blabel :proctor_secret, en: "Proctor Secret" %></td>
+      <td><%= f.text_field :proctor_secret %></td>
+    </tr>
+    <tr>
+      <td><%= f.blabel :adhesion_url, en: "Adhesion Url" %></td>
+      <td><%= f.text_field :adhesion_url %></td>
+    </tr>
+  </table>
+<% end %>
