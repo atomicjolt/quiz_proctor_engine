@@ -30,7 +30,6 @@ class ProctoredExamsController < ApplicationController
     query = {
       student_id: @current_user.id,
       proctor_code: params[:proctor_code],
-      oauth_consumer_key: "exams",
     }.to_query
 
     quiz = HTTParty.get(
