@@ -16,8 +16,8 @@
 require "httparty"
 
 class ProctoredExamsController < ApplicationController
-
   layout "borderless_lti"
+  before_action :require_user
 
   def show; end
 
@@ -35,7 +35,7 @@ class ProctoredExamsController < ApplicationController
     quiz = HTTParty.get(
       "#{plugin.settings[:adhesion_url]}/api/proctored_exams?#{query}",
       headers: headers,
-      # verify: false,
+      verify: false,
     )
 
     if quiz.parsed_response["error"].present?
