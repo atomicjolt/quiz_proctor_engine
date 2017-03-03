@@ -16,8 +16,8 @@
 require "httparty"
 
 class ProctoredExamsController < ApplicationController
-
   layout "borderless_lti"
+  before_action :require_user
 
   def show; end
 

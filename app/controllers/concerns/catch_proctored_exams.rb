@@ -13,8 +13,25 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-ActiveSupport.on_load(:action_controller) do
-  include Concerns::Whitelist
-  include Concerns::ProctorQuizzes
-  include Concerns::CatchProctoredExams
+module Concerns::CatchProctoredExams
+  extend ActiveSupport::Concern
+  included do
+    before_action :redirect_if_isolated
+    before_action :isolate_exams
+  end
+
+  private
+
+  def redirect_if_isolated
+    if @current_user && params[:controller] != "proctored_exams" && session[:isolate_exams]
+      session[:isolate_exams] = false
+      redirect_to proctored_exams_path
+    end
+  end
+
+  def isolate_exams
+    if !@current_user && params[:controller] == "proctored_exams"
+      session[:isolate_exams] = true
+    end
+  end
 end
