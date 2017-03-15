@@ -20,6 +20,7 @@ module Concerns::BypassAccessCode
   end
 
   private
+
   def bypass_access_code
     if session[:is_proctored]
       params[:access_code] = session[:proctor_access_code]

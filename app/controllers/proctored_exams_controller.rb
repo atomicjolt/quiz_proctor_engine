@@ -41,9 +41,10 @@ class ProctoredExamsController < ApplicationController
       flash[:error] = quiz.parsed_response["error"]
       redirect_to proctored_exams_path
     else
+      quiz = quiz.parsed_response;
       session[:is_proctored] = true
-      session[:proctor_access_code] = quiz.parsed_response["proctor_access_code"]
-      redirect_to course_quiz_take_path quiz.parsed_response["quiz"]["course_id"], quiz.parsed_response["quiz"]["exam_id"]
+      session[:proctor_access_code] = quiz["proctor_access_code"]
+      redirect_to course_quiz_take_path quiz["quiz"]["course_id"], quiz["quiz"]["exam_id"]
     end
   end
 end
