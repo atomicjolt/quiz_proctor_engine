@@ -24,6 +24,8 @@ class ProctorLoginController < ApplicationController
     pseudonym = Pseudonym.find_by(user_id: params[:user_id])
     @domain_root_account.pseudonym_sessions.create!(pseudonym, false)
     session[:is_proctored] = true
+    quiz = Quizzes::Quiz.find params[:quiz_id]
+    session[:proctor_access_code] = quiz.access_code
     redirect_to "/courses/#{params[:course_id]}/quizzes/#{params[:quiz_id]}/take"
   end
 
