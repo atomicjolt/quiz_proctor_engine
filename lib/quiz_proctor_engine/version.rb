@@ -14,5 +14,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module QuizProctorEngine
-  VERSION = "1.0.1".freeze
+  VERSION = "1.1.0".freeze
 end
