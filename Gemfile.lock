@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    quiz_proctor_engine (1.1.0)
+    quiz_proctor_engine (1.1.1)
       rails (~> 4.2.7)
 
 GEM
