@@ -13,9 +13,17 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-ActiveSupport.on_load(:action_controller) do
-  include Concerns::Whitelist
-  include Concerns::ProctorQuizzes
-  include Concerns::CatchProctoredExams
-  include Concerns::BypassAccessCode
+module Concerns::BypassAccessCode
+  extend ActiveSupport::Concern
+  included do
+    before_action :bypass_access_code
+  end
+
+  private
+
+  def bypass_access_code
+    if session[:is_proctored]
+      params[:access_code] = session[:proctor_access_code]
+    end
+  end
 end
