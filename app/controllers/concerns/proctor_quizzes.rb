@@ -24,6 +24,6 @@ module Concerns::ProctorQuizzes
 
   def choose_layout
     # require "byebug"; byebug
-    session[:is_proctored] ? "borderless_lti" : "application"
+    session[:is_proctored] ? "quiz_proctor" : "application"
   end
 end
