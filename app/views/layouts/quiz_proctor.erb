@@ -1,0 +1,43 @@
+<% content_for :head, include_common_stylesheets %>
+
+<style>
+  body {
+    padding: 20px;
+  }
+</style>
+
+<%= render :partial => "layouts/head" %>
+<%= yield %>
+<%= render :partial => 'layouts/foot', :locals => { :include_common_bundle => true } %>
+<script type="text/javascript">
+
+(function(){
+  removePreviousAndNext(0, false, false);
+})();
+
+function removePreviousAndNext(tries, nextAlreadyRemoved, previousAlreadyRemoved){
+
+  if(tries > 100 || (nextAlreadyRemoved && previousAlreadyRemoved)) {
+    return
+  };
+
+  var previous = document.getElementsByClassName("Button module-sequence-footer-button--previous")[0];
+  var next = document.getElementsByClassName("Button module-sequence-footer-button--next")[0];
+  var nextRemoved = nextAlreadyRemoved;
+  var previousRemoved = previousAlreadyRemoved;
+  if(next){
+    nextRemoved = true;
+    $(next).css({display: 'none'});
+  }
+  if(previous){
+    previousRemoved = true;
+    $(previous).css({display: 'none'});
+  }
+
+  setTimeout(function(){
+    removePreviousAndNext(tries + 1, nextRemoved, previousRemoved);
+  }, 100);
+
+}
+
+</script>
