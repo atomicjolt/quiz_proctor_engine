@@ -24,7 +24,7 @@ class ProctorConversationsController < ApplicationController
     message = Conversation.build_message(proctor, params[:body])
     conversation = proctor.initiate_conversation([student], true, subject: params[:subject])
     conversation.add_message(message, update_for_sender: false, cc_author: true)
-    render json: {status: :ok}
+    render json: { status: :ok }
   end
 
   private
@@ -38,7 +38,7 @@ class ProctorConversationsController < ApplicationController
     query = {
       student_id: params[:student_id],
       proctor_code: params[:proctor_code],
-      unstarted: true
+      unstarted: true,
     }.to_query
 
     quiz = HTTParty.get(
@@ -47,7 +47,7 @@ class ProctorConversationsController < ApplicationController
       # verify: false,
     )
     if quiz.parsed_response["error"].present?
-      render json: {error: 'Unauthorized'}
+      render json: { error: "Unauthorized" }
     end
   end
 end
