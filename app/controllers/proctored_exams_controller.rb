@@ -35,7 +35,7 @@ class ProctoredExamsController < ApplicationController
     quiz = HTTParty.get(
       "#{plugin.settings[:adhesion_url]}/api/proctored_exams?#{query}",
       headers: headers,
-      verify: false,
+      # verify: false,
     )
     if quiz.parsed_response["error"].present?
       flash[:error] = quiz.parsed_response["error"]
@@ -56,17 +56,17 @@ class ProctoredExamsController < ApplicationController
 
     query = {
       student_id: @current_user.id,
-      update: true
+      update: true,
     }.to_query
 
     HTTParty.get(
       "#{plugin.settings[:adhesion_url]}/api/proctored_exams?#{query}",
       headers: headers,
-      verify: false
+      # verify: false
     )
     # we wont need to handle the response for this anyway, hence the hardcoded ok value
     # if it fails we will probably never know because the JavaScript
     # that will handle the response will have been reloaded by the time this finishes.
-    render json: {status: "ok"}
+    render json: { status: "ok" }
   end
 end
