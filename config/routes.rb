@@ -18,4 +18,5 @@ Rails.application.routes.draw do
   get "proctored_exams" => "proctored_exams#show"
   post "proctored_exams" => "proctored_exams#start_quiz"
   put "proctored_exams" => "proctored_exams#finish_quiz"
+  post "proctor_conversations" => "proctor_conversations#initiate_conversation"
 end

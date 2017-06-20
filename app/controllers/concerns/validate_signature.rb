@@ -20,6 +20,7 @@ module Concerns::ValidateSignature
     raise "Invalid Signature " if !params[:signature]
     plugin = PluginSetting.find_by(name: "quiz_proctor")
     verifier = ActiveSupport::MessageVerifier.new plugin.settings[:proctor_secret]
-    verifier.verify(params[:signature])
+    verified = verifier.verify(params[:signature])
+    verified && Time.now.to_i - params[:date].to_i < 30
   end
 end
