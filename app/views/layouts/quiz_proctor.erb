@@ -32,6 +32,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   removePreviousAndNext(0, false, false);
 })();
 
+(function(){
+  addCustomEventListenerToSubmit(0, false);
+})();
+
 function removePreviousAndNext(tries, nextAlreadyRemoved, previousAlreadyRemoved){
 
   if(tries > 100 || (nextAlreadyRemoved && previousAlreadyRemoved)) {
@@ -55,6 +59,27 @@ function removePreviousAndNext(tries, nextAlreadyRemoved, previousAlreadyRemoved
     removePreviousAndNext(tries + 1, nextRemoved, previousRemoved);
   }, 100);
 
+}
+
+function addCustomEventListenerToSubmit(tries, finished) {
+
+  if (tries > 100 || finished) {
+    return;
+  }
+  var foundButton = false;
+  var button = document.getElementById("submit_quiz_button");
+  if(button) {
+    foundButton = true;
+    button.addEventListener('click', function(){
+      $.ajax({
+        type: 'PUT',
+        url: '/proctored_exams',
+      })
+    });
+  }
+  setTimeout(function(){
+    addCustomEventListenerToSubmit(tries + 1, foundButton);
+  }, 100)
 }
 
 </script>

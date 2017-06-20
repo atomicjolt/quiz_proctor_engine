@@ -47,4 +47,26 @@ class ProctoredExamsController < ApplicationController
       redirect_to course_quiz_take_path quiz["quiz"]["course_id"], quiz["quiz"]["exam_id"]
     end
   end
+
+  def finish_quiz
+    headers = {
+      "Content-Type" => "application/json",
+    }
+    plugin = PluginSetting.find_by(name: "quiz_proctor")
+
+    query = {
+      student_id: @current_user.id,
+      update: true,
+    }.to_query
+
+    HTTParty.get(
+      "#{plugin.settings[:adhesion_url]}/api/proctored_exams?#{query}",
+      headers: headers,
+      # verify: false
+    )
+    # we wont need to handle the response for this anyway, hence the hardcoded ok value
+    # if it fails we will probably never know because the JavaScript
+    # that will handle the response will have been reloaded by the time this finishes.
+    render json: { status: "ok" }
+  end
 end
