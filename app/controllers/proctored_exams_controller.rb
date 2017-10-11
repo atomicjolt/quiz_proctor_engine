@@ -15,7 +15,6 @@
 
 require "httparty"
 
-
 class ProctoredExamsController < ApplicationController
   layout "borderless_lti"
   before_action :require_user
@@ -71,10 +70,10 @@ class ProctoredExamsController < ApplicationController
 
     # HTTParty is really bad and sends the put body wrong, so i send everything in the params
     # RestClient does this better but I dont have RestClient so HTTParty it is.
-    resp = HTTParty.put(
-      "#{plugin.settings[:adhesion_url]}/api/proctored_exams/#{exam_request["id"]}?#{query}",
+    HTTParty.put(
+      "#{plugin.settings[:adhesion_url]}/api/proctored_exams/#{exam_request['id']}?#{query}",
       body: {},
-      headers: headers
+      headers: headers,
     ).parsed_response
     canvas_quiz = Quizzes::Quiz.find(exam_request["exam_id"])
 
