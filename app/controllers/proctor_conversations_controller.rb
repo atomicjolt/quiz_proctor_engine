@@ -41,12 +41,13 @@ class ProctorConversationsController < ApplicationController
       unstarted: true,
     }.to_query
 
-    quiz = HTTParty.get(
-      "#{plugin.settings[:adhesion_url]}/api/proctored_exams?#{query}",
+    exam_request = HTTParty.get(
+      "#{plugin.settings[:adhesion_proctor_url]}/api/proctored_exams?#{query}",
       headers: headers,
       # verify: false,
-    )
-    if quiz.parsed_response["error"].present?
+    ).parsed_response["exam_request"]
+
+    if exam_request.nil?
       render json: { error: "Unauthorized" }
     end
   end
