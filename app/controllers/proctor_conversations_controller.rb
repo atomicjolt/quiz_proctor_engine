@@ -20,7 +20,8 @@ class ProctorConversationsController < ApplicationController
     proctor = User.find(params[:proctor_id])
     cd = CustomData.find_by(user: proctor, namespace: "edu.au.exam")
     if cd.nil? || params[:proctor_code] != cd.data["d"]["exam"]["proctor_code"]
-      render json: { error: "Unauthorized"}
+      render json: { error: "Unauthorized" }
+      return
     end
     student = User.find(params[:student_id])
     message = Conversation.build_message(proctor, params[:body])
