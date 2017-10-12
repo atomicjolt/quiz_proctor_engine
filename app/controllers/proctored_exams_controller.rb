@@ -33,7 +33,7 @@ class ProctoredExamsController < ApplicationController
     }.to_query
 
     exam_request = HTTParty.get(
-      "#{plugin.settings[:adhesion_url]}/api/proctored_exams?#{query}",
+      "#{plugin.settings[:adhesion_proctor_url]}/api/proctored_exams?#{query}",
       headers: headers,
       # verify: false,
     ).parsed_response["exam_request"]
