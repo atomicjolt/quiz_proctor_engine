@@ -74,7 +74,7 @@ class ProctoredExamsController < ApplicationController
       "#{plugin.settings[:adhesion_proctor_url]}/api/proctored_exams/#{exam_request['id']}?#{query}",
       body: {},
       headers: headers,
-    ).parsed_response
+    )
     canvas_quiz = Quizzes::Quiz.find(exam_request["exam_id"])
 
     session[:is_proctored] = true
