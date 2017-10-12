@@ -50,10 +50,11 @@ class ProctoredExamsController < ApplicationController
     code = params[:proctor_code]
     Account.find(exam_request["testing_center_id"]).users.find_each do |user|
       cd = CustomData.find_by(user: user, namespace: "edu.au.exam")
-      if cd.nil? || cd.data["d"]["exam"]["proctor_code"] == code
+      if cd.present? && cd.data["d"]["exam"]["proctor_code"] == code
         matched_code = true
         proctor_id = user.id
         proctor_name = user.name
+        break
       end
     end
 
