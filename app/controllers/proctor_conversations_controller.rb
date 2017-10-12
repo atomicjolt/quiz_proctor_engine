@@ -12,14 +12,16 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-require "httparty"
 
 class ProctorConversationsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :verify_messageable
 
   def initiate_conversation
     proctor = User.find(params[:proctor_id])
+    cd = CustomData.find_by(user: proctor, namespace: "edu.au.exam")
+    if cd.nil? || params[:proctor_code] != cd.data["d"]["exam"]["proctor_code"]
+      render json: { error: "Unauthorized"}
+    end
     student = User.find(params[:student_id])
     message = Conversation.build_message(proctor, params[:body])
     conversation = proctor.initiate_conversation([student], true, subject: params[:subject])
@@ -27,28 +29,4 @@ class ProctorConversationsController < ApplicationController
     render json: { status: :ok }
   end
 
-  private
-
-  def verify_messageable
-    headers = {
-      "Content-Type" => "application/json",
-    }
-    plugin = PluginSetting.find_by(name: "quiz_proctor")
-
-    query = {
-      student_id: params[:student_id],
-      proctor_code: params[:proctor_code],
-      unstarted: true,
-    }.to_query
-
-    exam_request = HTTParty.get(
-      "#{plugin.settings[:adhesion_proctor_url]}/api/proctored_exams?#{query}",
-      headers: headers,
-      # verify: false,
-    ).parsed_response["exam_request"]
-
-    if exam_request.nil?
-      render json: { error: "Unauthorized" }
-    end
-  end
 end
