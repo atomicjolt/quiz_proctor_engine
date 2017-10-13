@@ -32,20 +32,56 @@ class ProctoredExamsController < ApplicationController
       proctor_code: params[:proctor_code],
     }.to_query
 
-    quiz = HTTParty.get(
-      "#{plugin.settings[:adhesion_url]}/api/proctored_exams?#{query}",
+    exam_request = HTTParty.get(
+      "#{plugin.settings[:adhesion_proctor_url]}/api/proctored_exams?#{query}",
       headers: headers,
       # verify: false,
-    )
-    if quiz.parsed_response["error"].present?
-      flash[:error] = quiz.parsed_response["error"]
+    ).parsed_response["exam_request"]
+
+    if exam_request.nil?
+      flash[:error] = "You do not have an exam that is ready to start."
       redirect_to proctored_exams_path
-    else
-      quiz = quiz.parsed_response
-      session[:is_proctored] = true
-      session[:proctor_access_code] = quiz["proctor_access_code"]
-      redirect_to course_quiz_take_path quiz["quiz"]["course_id"], quiz["quiz"]["exam_id"]
+      return
     end
+
+    matched_code = false
+    proctor_id = nil
+    proctor_name = nil
+    code = params[:proctor_code]
+    users = Account.find(exam_request["testing_center_id"]).users
+    CustomData.where(user: users, namespace: "edu.au.exam").find_each do |cd|
+      user = users.detect { |u| u.id == cd.user_id }
+      if cd.data["d"]["exam"]["proctor_code"] == code
+        matched_code = true
+        proctor_id = user.id
+        proctor_name = user.name
+        break
+      end
+    end
+
+    if !matched_code
+      flash[:error] = "Invalid proctor code."
+      redirect_to proctored_exams_path
+      return
+    end
+
+    query = {
+      proctor_id: proctor_id,
+      proctor_name: proctor_name,
+    }.to_query
+
+    # HTTParty is really bad and sends the put body wrong, so i send everything in the params
+    # RestClient does this better but I dont have RestClient so HTTParty it is.
+    HTTParty.put(
+      "#{plugin.settings[:adhesion_proctor_url]}/api/proctored_exams/#{exam_request['id']}?#{query}",
+      body: {},
+      headers: headers,
+    )
+    canvas_quiz = Quizzes::Quiz.find(exam_request["exam_id"])
+
+    session[:is_proctored] = true
+    session[:proctor_access_code] = canvas_quiz.access_code
+    redirect_to course_quiz_take_path exam_request["course_id"], exam_request["exam_id"]
   end
 
   def finish_quiz
@@ -60,7 +96,7 @@ class ProctoredExamsController < ApplicationController
     }.to_query
 
     HTTParty.get(
-      "#{plugin.settings[:adhesion_url]}/api/proctored_exams?#{query}",
+      "#{plugin.settings[:adhesion_proctor_url]}/api/proctored_exams?#{query}",
       headers: headers,
       # verify: false
     )
