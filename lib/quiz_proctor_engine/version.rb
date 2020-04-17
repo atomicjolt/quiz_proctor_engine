@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Atomic Jolt
+# Copyright (C) 2017, 2020 Atomic Jolt
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -14,5 +14,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module QuizProctorEngine
-  VERSION = "1.3.1".freeze
+  VERSION = "1.5.0".freeze
 end
