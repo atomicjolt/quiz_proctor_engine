@@ -14,8 +14,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ActiveSupport.on_load(:action_controller) do
-  include Concerns::Whitelist
-  include Concerns::ProctorQuizzes
-  include Concerns::CatchProctoredExams
-  include Concerns::BypassAccessCode
+  include Whitelist
+  include ProctorQuizzes
+  include CatchProctoredExams
+  include BypassAccessCode
 end

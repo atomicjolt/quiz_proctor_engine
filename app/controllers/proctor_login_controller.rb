@@ -15,7 +15,7 @@
 
 class ProctorLoginController < ApplicationController
   include Login::Shared
-  include Concerns::ValidateSignature
+  include ValidateSignature
   before_action :validate_sigature
 
   def login
