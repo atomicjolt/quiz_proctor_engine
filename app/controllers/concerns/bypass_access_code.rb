@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-module Concerns::BypassAccessCode
+module BypassAccessCode
   extend ActiveSupport::Concern
   included do
     before_action :bypass_access_code
