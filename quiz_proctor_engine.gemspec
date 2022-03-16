@@ -6,7 +6,7 @@ require "quiz_proctor_engine/version"
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "quiz_proctor_engine"
-  s.version     = QuizProctorEngine::VERSION
+  s.version     = QuizProctorEngine::Version
   s.authors     = ["dittonjs"]
   s.email       = ["jditton.atomic@gmail.com"]
   s.homepage    = ""
