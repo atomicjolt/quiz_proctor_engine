@@ -26,7 +26,7 @@ module QuizProctorEngine
         author: "Atomic Jolt",
         author_website: "http://www.atomicjolt.com/",
         description: -> { t(:description, "Enable taking proctored quizzes in a chromeless view") },
-        version: QuizProctorEngine::VERSION,
+        version: QuizProctorEngine::Version,
         settings_partial: "quiz_proctor_engine/plugin_settings",
       )
     end
